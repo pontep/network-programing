@@ -65,7 +65,7 @@ int main()
     printf("This is an online lottery application in SUT, which upto 3 people bet per round!\n");
     printf("Let's see if this draw will you win the prize ?!\n");
     // 1 Send
-    printf("Input your number: ");
+    printf("Input your number [0-99]: ");
     fgets(sendline, MAXLINE, stdin);
     send(socket_peer, sendline, strlen(sendline), 0);
     // 2 Receive: Waiting for other client.
