@@ -170,7 +170,7 @@ int main()
             srand(time(0));
             result_number = rand() % 100;
             // FIX HUAY
-            result_number = 88;
+            //result_number = 88;
             printf("=> Result prize number is %d\n", result_number);
             int j;
             // Cal client won
