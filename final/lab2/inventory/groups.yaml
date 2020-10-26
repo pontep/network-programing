@@ -1,0 +1,18 @@
+cisco_ios:
+  platform: ios
+  username: 'cpe'
+  password: 'cpe'
+  connection_options:
+    napalm:
+      extras:
+        optional_args:
+          secret: 'cpe'
+    netmiko:
+      extras:
+        secret: 'cpe'
+router:
+  groups:
+    - cisco_ios
+switches:
+  groups:
+    - cisco_ios

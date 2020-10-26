@@ -1,0 +1,4 @@
+{% for loopback_id, interface_ip in host.data["loopback"].items() %}
+    interface Loopback{{loopback_id}}
+    ip address {{ interface_ip }} 255.255.255.255
+{% endfor %}

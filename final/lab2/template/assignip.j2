@@ -1,0 +1,7 @@
+{% for interface in host.data["interfaces"].items() %}
+ interface {{ interface[0] }}
+    no switch
+    ip address {{ interface[1].get('ipaddress') }}
+    {{ "shutdown" if interface[1].get('shutdown') else "no shutdown" }}
+
+{% endfor %}

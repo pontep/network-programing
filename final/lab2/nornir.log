@@ -1,0 +1,40 @@
+2020-10-08 10:20:22,284 -  nornir.core -     INFO -        run() - Running task 'create_loopback' with args {} on 1 hosts
+2020-10-08 10:20:22,285 - nornir.core.task -    ERROR -      start() - Host 'router-4': task 'create_loopback' failed with traceback:
+Traceback (most recent call last):
+  File "/home/pontep/.local/lib/python3.8/site-packages/nornir/core/task.py", line 98, in start
+    r = self.task(self, **self.params)
+  File "main.py", line 15, in create_loopback
+    path=f'templates/ios/{hostType}'
+NameError: name 'hostType' is not defined
+
+2020-10-08 10:20:22,285 -  nornir.core -     INFO -        run() - Running task 'napalm_get' with args {'getters': ['interfaces_ip']} on 1 hosts
+2020-10-08 10:43:56,522 -  nornir.core -     INFO -        run() - Running task 'assign_ip' with args {} on 1 hosts
+2020-10-08 10:43:58,615 -  nornir.core -     INFO -        run() - Running task 'turnon_iprouting' with args {} on 1 hosts
+2020-10-08 10:43:58,763 -  nornir.core -     INFO -        run() - Running task 'assign_iproute' with args {} on 1 hosts
+2020-10-08 10:43:59,041 -  nornir.core -     INFO -        run() - Running task 'napalm_get' with args {'getters': ['interfaces_ip']} on 1 hosts
+2020-10-08 10:44:00,067 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'sh ip route'} on 1 hosts
+2020-10-08 10:44:13,476 -  nornir.core -     INFO -        run() - Running task 'assign_ip' with args {} on 1 hosts
+2020-10-08 10:44:14,508 -  nornir.core -     INFO -        run() - Running task 'turnon_iprouting' with args {} on 1 hosts
+2020-10-08 10:44:14,640 -  nornir.core -     INFO -        run() - Running task 'assign_iproute' with args {} on 1 hosts
+2020-10-08 10:44:14,948 -  nornir.core -     INFO -        run() - Running task 'napalm_get' with args {'getters': ['interfaces_ip']} on 1 hosts
+2020-10-08 10:44:15,958 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'sh ip route'} on 1 hosts
+2020-10-08 10:51:12,465 -  nornir.core -     INFO -        run() - Running task 'assign_ip' with args {} on 1 hosts
+2020-10-08 10:51:13,509 -  nornir.core -     INFO -        run() - Running task 'turnon_iprouting' with args {} on 1 hosts
+2020-10-08 10:51:13,639 -  nornir.core -     INFO -        run() - Running task 'assign_iproute' with args {} on 1 hosts
+2020-10-08 10:51:13,954 -  nornir.core -     INFO -        run() - Running task 'napalm_get' with args {'getters': ['interfaces_ip']} on 1 hosts
+2020-10-08 10:51:14,929 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'sh ip route'} on 1 hosts
+2020-10-08 10:54:03,938 -  nornir.core -     INFO -        run() - Running task 'assign_ip' with args {} on 1 hosts
+2020-10-08 10:54:04,977 -  nornir.core -     INFO -        run() - Running task 'turnon_iprouting' with args {} on 1 hosts
+2020-10-08 10:54:05,108 -  nornir.core -     INFO -        run() - Running task 'assign_iproute' with args {} on 1 hosts
+2020-10-08 10:54:05,403 -  nornir.core -     INFO -        run() - Running task 'napalm_get' with args {'getters': ['interfaces_ip']} on 1 hosts
+2020-10-08 10:54:06,445 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'sh ip route'} on 1 hosts
+2020-10-08 10:54:09,703 -  nornir.core -     INFO -        run() - Running task 'assign_ip' with args {} on 1 hosts
+2020-10-08 10:54:10,714 -  nornir.core -     INFO -        run() - Running task 'turnon_iprouting' with args {} on 1 hosts
+2020-10-08 10:54:10,848 -  nornir.core -     INFO -        run() - Running task 'assign_iproute' with args {} on 1 hosts
+2020-10-08 10:54:11,157 -  nornir.core -     INFO -        run() - Running task 'napalm_get' with args {'getters': ['interfaces_ip']} on 1 hosts
+2020-10-08 10:54:12,135 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'sh ip route'} on 1 hosts
+2020-10-08 10:58:34,235 -  nornir.core -     INFO -        run() - Running task 'assign_ip' with args {} on 1 hosts
+2020-10-08 10:58:35,246 -  nornir.core -     INFO -        run() - Running task 'turnon_iprouting' with args {} on 1 hosts
+2020-10-08 10:58:35,388 -  nornir.core -     INFO -        run() - Running task 'assign_iproute' with args {} on 1 hosts
+2020-10-08 10:58:35,689 -  nornir.core -     INFO -        run() - Running task 'napalm_get' with args {'getters': ['interfaces_ip']} on 1 hosts
+2020-10-08 10:58:36,657 -  nornir.core -     INFO -        run() - Running task 'netmiko_send_command' with args {'command_string': 'sh ip route'} on 1 hosts
