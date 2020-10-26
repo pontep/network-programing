@@ -24,8 +24,8 @@ int main()
     char buf[MAXLINE];
     int n = 0;
     int socket_client;
-
-    printf("Configuring local address...\n\n");
+    printf("********** STARTING SERVER **********\n\n");
+    printf("Configuring local address...\n");
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_INET6; //Dual Stack
     hints.ai_socktype = SOCK_STREAM;
@@ -33,7 +33,7 @@ int main()
 
     getaddrinfo(0, "7777", &hints, &servinfo);
 
-    printf("Creating socket ...\n\n");
+    printf("Creating socket ...\n");
     socket_listen = socket(servinfo->ai_family, servinfo->ai_socktype, 0);
     if (socket_listen == -1)
     {
@@ -49,21 +49,22 @@ int main()
         return 1; //Dual Stack
     }
 
-    printf("Binding socket to local address...\n\n");
+    printf("Binding socket to local address...\n");
     if (bind(socket_listen, servinfo->ai_addr, servinfo->ai_addrlen) == -1)
     {
         fprintf(stderr, "bind() failed. (%d)\n", GETSOCKETERRNO());
         return 1;
     }
 
-    printf("Listening ...\n\n");
+    printf("Listening ...\n");
     if (listen(socket_listen, 10) == -1)
     {
         fprintf(stderr, "listen() failed. (%d)\n", GETSOCKETERRNO());
         return 1;
     }
 
-    printf("Waiting for connection ...\n\n");
+    printf("\n********** SERVER STARTED **********\n\n");
+    printf("=> Waiting for client connection...\n");
 
     // FD_SET
     fd_set our_sockets;
@@ -79,7 +80,7 @@ int main()
     int client_socket_number[3];
     int numbers[3];
 
-    int successfully_recieved_number = 0;
+    int successfully_received_number = 0;
     int result_number;
     int client_won = 0;
     // SELECT
@@ -100,7 +101,7 @@ int main()
                 if (i == socket_listen)
                 {
                     count++;
-                    printf("[... Received request from a new client ...]\n\n");
+                    printf("********** Received request from a new client **********\n");
                     struct sockaddr_storage client_address;
                     socklen_t client_len = sizeof(client_address);
                     int socket_client = accept(socket_listen,
@@ -124,11 +125,11 @@ int main()
                                     client_len,
                                     address_buffer, sizeof(address_buffer), 0, 0,
                                     NI_NUMERICHOST);
-                        printf("New connection from %s\n\n", address_buffer);
+                        printf("=> New connection from %s\n", address_buffer);
                     }
                     else
                     {
-                        printf("!!!This server cannot accept this connection (Socket = %d)!!!\n\n", socket_client);
+                        printf("=> !!!This server cannot accept this connection (Socket = %d)!!!\n\n", socket_client);
                         close(socket_client);
                         count--;
                     }
@@ -141,33 +142,36 @@ int main()
                         // RECEIVED NUMBER FROM CLIENT
                         char read[1024];
                         int bytes_received = recv(i, read, 1024, 0);
-                        printf("Number received from the client (Socket = %d): %s\n\n", i, read);
+                        printf("=> Number received from the client (Socket = %d): %s\n\n", i, read);
                         strtok(read, "\n");
 
                         // STORE A NUMBER FROM CLIENT
-                        client_socket_number[successfully_recieved_number] = i;
-                        numbers[successfully_recieved_number] = atoi(read);
+                        client_socket_number[successfully_received_number] = i;
+                        numbers[successfully_received_number] = atoi(read);
 
                         // SEND TO CLIENT
-                        char result[50];
-                        sprintf(result, "Server recieve: %d. Waiting for other client.\n", numbers[successfully_recieved_number]);
+                        char result[100];
+                        sprintf(result, "We have received your number %d, Please waiting for other client just a moment :)\n", numbers[successfully_received_number]);
                         send(i, result, strlen(result), 0);
                         bzero(read, 1024);
 
-                        ++successfully_recieved_number;
+                        ++successfully_received_number;
                     }
                 }
             }
         }
-        // If recieved 3 number from each client
-        if (successfully_recieved_number == 3)
+        // If received 3 number from each client
+        if (successfully_received_number == 3)
         {
+            printf("=> All client have been sending number ;)\n");
+            printf("=> Generating prize number...\n");
+
             // RANDOM RESULT PRIZE NUMBER.
             srand(time(0));
             result_number = rand() % 100;
             // FIX HUAY
             result_number = 88;
-            printf("Result prize number = %d\n\n", result_number);
+            printf("=> Result prize number is %d\n", result_number);
             int j;
             // Cal client won
             for (j = 0; j < 3; j++)
@@ -207,10 +211,10 @@ int main()
 
                 send(client_socket_number[j], result, strlen(result), 0);
             }
-            printf("Closing listening socket...\n");
+            printf("\n********** Closing listening socket **********\n\n");
             close(socket_listen);
 
-            printf("Finished.\n");
+            printf("Server Finished.\n");
             return 0;
         }
     }

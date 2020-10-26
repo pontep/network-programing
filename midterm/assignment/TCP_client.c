@@ -23,7 +23,7 @@ int main()
     int socket_peer;
     char sendline[MAXLINE], recvline[MAXLINE];
     char buffer[1024];
-
+    printf("********** STARTING APPLICATION **********\n\n");
     printf("Configuring remote address...\n");
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_INET;
@@ -60,22 +60,26 @@ int main()
     }
     freeaddrinfo(server_addr);
     printf("Connected.\n\n");
+
+    printf("********** WELCOME TO PRIZED ONLINE **********\n");
+    printf("This is an online lottery application in SUT, which upto 3 people bet per round!\n");
+    printf("Let's see if this draw will you win the prize ?!\n");
     // 1 Send
-    printf("Sending from me: ");
+    printf("Input your number: ");
     fgets(sendline, MAXLINE, stdin);
     send(socket_peer, sendline, strlen(sendline), 0);
     // 2 Receive: Waiting for other client.
     bzero(buffer, sizeof(buffer));
     int bytes_received = recv(socket_peer, buffer, 1024, 0);
-    printf("Receiving from server: ");
+    printf("=>");
     puts(buffer);
     // 3 Recieve: All Client Result
     bzero(buffer, sizeof(buffer));
     bytes_received = recv(socket_peer, buffer, 1024, 0);
-    printf("Receiving from server: ");
+    printf("=>");
     puts(buffer);
 
     close(socket_peer);
-    printf("Finished.\n");
+    printf("We wish you merry a christmas :D !! See you next round.\n");
     return 0;
 }
