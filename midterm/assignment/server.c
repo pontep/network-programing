@@ -75,8 +75,13 @@ int main()
     max_socket = socket_listen;
     int count = 0;
 
-    // Number
+    // Client Number
+    int client_socket_number[3];
     int numbers[3];
+
+    int successfully_recieved_number = 0;
+    int result_number;
+    int client_won = 0;
     // SELECT
     for (;;)
     {
@@ -87,7 +92,6 @@ int main()
             fprintf(stderr, "select() failed. (%d)\n", GETSOCKETERRNO());
             return 1;
         }
-
         int i;
         for (i = 1; i <= max_socket; ++i)
         {
@@ -109,7 +113,7 @@ int main()
                         return 1;
                     }
 
-                    // CHECK IF CLIENT > 3
+                    // 3 Client can connect to one time.
                     if (count <= 3)
                     {
                         FD_SET(socket_client, &our_sockets);
@@ -117,11 +121,9 @@ int main()
                             max_socket = socket_client;
                         char address_buffer[100];
                         getnameinfo((struct sockaddr *)&client_address,
-
                                     client_len,
                                     address_buffer, sizeof(address_buffer), 0, 0,
                                     NI_NUMERICHOST);
-
                         printf("New connection from %s\n\n", address_buffer);
                     }
                     else
@@ -133,32 +135,83 @@ int main()
                 }
                 else
                 {
-                    char read[1024];
-                    // RECEIVED FROM CLIENT
-                    int bytes_received = recv(i, read, 1024, 0);
-                    printf("Msg received from the client (Socket = %d): %s\n\n", i, read);
-                    strtok(read, "\n");
-
-                    // SEND TO CLIENT
-                    int usd = atoi(read);
-                    int usdtobaht = 31;
-                    char result[50];
-                    sprintf(result, "%d Baht\n", usd * usdtobaht);
-                    send(i, result, strlen(result), 0);
-
-                    // IF CLOSE
-
-                    if (strcmp(read, "close") == 0)
+                    // IF 3 CLIENT CONNECTION -> CLIENT CAN SEND A NUBMER.
+                    if (count == 3)
                     {
-                        count--;
-                        FD_CLR(i, &our_sockets);
-                        close(i);
-                        printf("Closing this socket client (Socket = %d)\n\n", i);
-                    }
+                        // RECEIVED NUMBER FROM CLIENT
+                        char read[1024];
+                        int bytes_received = recv(i, read, 1024, 0);
+                        printf("Number received from the client (Socket = %d): %s\n\n", i, read);
+                        strtok(read, "\n");
 
-                    bzero(read, 1024);
+                        // STORE A NUMBER FROM CLIENT
+                        client_socket_number[successfully_recieved_number] = i;
+                        numbers[successfully_recieved_number] = atoi(read);
+
+                        // SEND TO CLIENT
+                        char result[50];
+                        sprintf(result, "Server recieve: %d. Waiting for other client.\n", numbers[successfully_recieved_number]);
+                        send(i, result, strlen(result), 0);
+                        bzero(read, 1024);
+
+                        ++successfully_recieved_number;
+                    }
                 }
             }
+        }
+        // If recieved 3 number from each client
+        if (successfully_recieved_number == 3)
+        {
+            // RANDOM RESULT PRIZE NUMBER.
+            srand(time(0));
+            result_number = rand() % 100;
+            // FIX HUAY
+            result_number = 88;
+            printf("Result prize number = %d\n\n", result_number);
+            int j;
+            // Cal client won
+            for (j = 0; j < 3; j++)
+            {
+                if (numbers[j] == result_number)
+                {
+                    client_won++;
+                }
+            }
+            // Announcement of results
+            for (j = 0; j < 3; j++)
+            {
+                char result[1024] = "";
+                sprintf(result, "All number is %d %d %d\n", numbers[0], numbers[1], numbers[2]);
+
+                // if client won
+                if (numbers[j] == result_number)
+                {
+                    strcat(result, "You are Winner, get your money.\n");
+                }
+                else
+                {
+                    strcat(result, "You're never a Loser until you quit trying.\n");
+                }
+
+                // if someone won
+                if (client_won > 0)
+                {
+                    char din_tmp[1024] = "";
+                    sprintf(din_tmp, "This time, have %d lucky guys :)\n", client_won);
+                    strcat(result, din_tmp);
+                }
+                else
+                {
+                    strcat(result, "This time, no one won the prize :(\n");
+                }
+
+                send(client_socket_number[j], result, strlen(result), 0);
+            }
+            printf("Closing listening socket...\n");
+            close(socket_listen);
+
+            printf("Finished.\n");
+            return 0;
         }
     }
     printf("Closing listening socket...\n");

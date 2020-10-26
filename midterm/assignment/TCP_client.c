@@ -60,17 +60,20 @@ int main()
     }
     freeaddrinfo(server_addr);
     printf("Connected.\n\n");
-
+    // 1 Send
     printf("Sending from me: ");
-    while (fgets(sendline, MAXLINE, stdin) != NULL)
-    {
-        send(socket_peer, sendline, strlen(sendline), 0);
-        bzero(buffer, sizeof(buffer));
-        int bytes_received = recv(socket_peer, buffer, 1024, 0);
-        printf("Receiving from server: ");
-        puts(buffer);
-        printf("Sending from me: ");
-    }
+    fgets(sendline, MAXLINE, stdin);
+    send(socket_peer, sendline, strlen(sendline), 0);
+    // 2 Receive: Waiting for other client.
+    bzero(buffer, sizeof(buffer));
+    int bytes_received = recv(socket_peer, buffer, 1024, 0);
+    printf("Receiving from server: ");
+    puts(buffer);
+    // 3 Recieve: All Client Result
+    bzero(buffer, sizeof(buffer));
+    bytes_received = recv(socket_peer, buffer, 1024, 0);
+    printf("Receiving from server: ");
+    puts(buffer);
 
     close(socket_peer);
     printf("Finished.\n");
